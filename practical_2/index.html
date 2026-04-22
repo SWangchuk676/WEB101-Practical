@@ -1,248 +1,227 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather API Dashboard</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather API Dashboard</title>
 
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
 
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+    .form-group {
+      margin-bottom: 15px;
+    }
 
-        input,
-        select,
-        button {
-            width: 100%;
-            padding: 8px;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
 
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            padding: 10px;
-            font-weight: bold;
-        }
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
 
-        button:hover {
-            background-color: #2980b9;
-        }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
 
-        .weather-card {
-            background-color: #f9f9f9;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
+    button:hover {
+      background-color: #45a049;
+    }
 
-        .saved-locations {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
+    .weather-card {
+      background-color: #e7f3ff;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 4px;
+    }
 
-        .location-item {
-            background-color: #eef7ff;
-            border: 1px solid #bde0fe;
-            border-radius: 4px;
-            padding: 10px;
-            width: calc(50% - 10px);
-            box-sizing: border-box;
-            position: relative;
-        }
+    .saved-locations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
 
-        .location-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px
-        }
+    .location-card {
+      background-color: #e8f5e9;
+      border-radius: 5px;
+      padding: 10px;
+      width: calc(50% - 10px);
+    }
 
-        .btn-edit,
-        .btn-delete {
-            width: 48%;
-            padding: 5px;
-        }
+    .location-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
 
-        .btn-delete {
-            background-color: #e74c3c;
-        }
+    .btn-edit,
+    .btn-delete {
+      padding: 5px;
+      cursor: pointer;
+    }
 
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
+    .btn-edit {
+      background-color: #4CAF50;
+      color: white;
+    }
 
-        .response-info {
-            background-color: #eefaf7;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
+    .btn-delete {
+      background-color: #f44336;
+      color: white;
+    }
 
-        .tabs {
-            display: flex;
-            margin-bottom: 15px;
-        }
+    .response-info {
+      background-color: #fff3e0;
+      border-left: 4px solid #ff9800;
+      padding: 10px;
+      margin-top: 15px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
 
-        .tab {
-            padding: 10px 15px;
-            background-color: #ddd;
-            cursor: pointer;
-            border-radius: 4px 4px 0 0;
-            margin-right: 5px;
-        }
+    .tabs {
+      display: flex;
+      margin-bottom: 15px;
+    }
 
-        .tab.active {
-            background-color: #3498db;
-            color: white;
-        }
+    .tab {
+      padding: 10px 15px;
+      background-color: #ddd;
+      cursor: pointer;
+      margin-right: 5px;
+      border-radius: 4px 4px 0 0;
+    }
 
-        .tab-content {
-            display: none;
-        }
+    .tab.active {
+      background-color: #4CAF50;
+      color: white;
+    }
 
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
-    <h1>Weather API Dashboard</h1>
 
-    <div class="container">
-        <div class="tabs">
-            <div class="tab active" data-tab="get">GET Weather</div>
-            <div class="tab" data-tab="post">POST Location</div>
-            <div class="tab" data-tab="saved">Saved Locations</div>
-            <div class="tab" data-tab="api-info">API Info</div>
-        </div>
+  <h1>Weather API Dashboard</h1>
 
-        <!--GET Weather Tab-->
-        <div class="tab-content active" id="get-tab">
-            <h2>Get Current Weather (GET Request)</h2>
-            <div class="form-group">
-                <label for="city-input">City Name:</label>
-                <input type="text" id="city-input" placeholder="Enter city name (e.g, London)">
-            </div>
-            <button id="fet-weather">Get Weather</button>
+  <div class="container">
 
-            <div class="weather-display" id="weather-result"></div>
-        </div>
-
-        <!--POST Location Tab-->
-        <div class="tab-content" id="post-tab">
-            <h2>Save Location (POST Request)</h2>
-            <div class="form-group">
-                <label for="location-name">Location Name:</label>
-                <input type="text" id="location-name" placeholder="Enter location name">
-            </div>
-
-            <div class="form-group">
-                <label for="location-city">City:</label>
-                <input type="text" id="location-city" placeholder="Enter city">
-            </div>
-            <div class="form-group">
-                <label for="location-country">Country:</label>
-                <input type="text" id="location-country" placeholder="Enter country code (e.g, US)">
-            </div>
-            <div class="form-group">
-                <label for="location-notes">Notes:</label>
-                <input type="text" id="location-notes" placeholder="Add optional notes">
-            </div>
-            <button id="save-location">Save Location</button>
-        </div>
-
-        <!--Saved Locations Tab-->
-        <div class="tab-content" id="saved-tab">
-            <h2>Saved Locations</h2>
-            <p>Manage your saved locations (PUT and DELETE requests)</p>
-            <div id="saved-locations" class="saved-locations">
-                <!--Saved locations will be displayed here-->
-            </div>
-        </div>
-
-        <!--API Info tab-->
-        <div class="tab-content" id="api-info-tab">
-            <h2>API Information</h2>
-            <p>This application demonstrates RESTful API operations:</p>
-            <ul>
-                <li><strong>GET</strong> -Retrieves weather data from OpenWeatherMap API</li>
-                <li><strong>POST</strong> -Saves a new location to JSONPlaceholder API</li>
-                <li><strong>PUT</strong> -Updates an existing saved location</li>
-                <li><strong>DELETE</strong> -Removes a saved location</li>
-            </ul>
-            <p>Last request information:</p>
-            <div id="response-info" class="response-info">No requests made yet.</div>
-        </div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="get">GET Weather</div>
+      <div class="tab" data-tab="post">POST Location</div>
+      <div class="tab" data-tab="put">PUT Location</div>
+      <div class="tab" data-tab="delete">DELETE Location</div>
     </div>
 
-    <!--Edit Location Modal (simplified inline)-->
-    <div id="edit-modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 100;">
-        <div
-            style="background-color: white; margin: 10% auto; padding: 20px; width: 80%; max-width: 500px;border-radius: 8px;">
-            <h3>Edit Location</h3>
-            <div class="form-group">
-                <label for="edit-name">Location Name:</label>
-                <input type="text" id="edit-city">
-            </div>
-            <div class="form-group">
-                <label for="edit-city">City:</label>
-                <input type="text" id="edit-city">
-            </div>
-            <div class="form-group">
-                <label for="edit-notes">Country:</label>
-                <input type="text" id="edit-country">
-            </div>
-            <div class="form-group">
-                <label for="edit-notes">Notes:</label>
-                <input type="text id=edit-notes">
-            </div>
-            <input type="hidden" id="edit-id">
-            <div style="display: flex; justify-content: space-between;">
-                <button id="update-location" style="width: 48%;">Update</button>
-                <button id="cancel-edit" style="width: 48%; background-color: #95a5a6;">Cancel</button>
-            </div>
+    <!-- GET -->
+    <div class="tab-content active" id="get">
+      <h2>Get Weather Data</h2>
+
+      <form id="getForm">
+        <div class="form-group">
+          <label for="city">City Name:</label>
+          <input type="text" id="city" placeholder="Enter city name (e.g., London)">
         </div>
+
+        <button type="submit">Get Weather</button>
+      </form>
+
+      <div class="weather-display" id="weatherResult"></div>
     </div>
 
-    <script src="script.js"></script>        
+    <!-- POST -->
+    <div class="tab-content" id="post">
+      <h2>Save Location (POST Request)</h2>
+
+      <form id="postForm">
+        <div class="form-group">
+          <label for="locationName">Location Name:</label>
+          <input type="text" id="locationName" placeholder="Enter location name">
+        </div>
+
+        <div class="form-group">
+          <label for="locationCity">City:</label>
+          <input type="text" id="locationCity" placeholder="Enter city">
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country:</label>
+          <input type="text" id="country" placeholder="Enter country code (e.g., US)">
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes:</label>
+          <input type="text" id="notes" placeholder="Optional notes">
+        </div>
+
+        <button type="submit">Save Location</button>
+      </form>
+    </div>
+
+    <!-- PUT -->
+    <div class="tab-content" id="put">
+      <h2>Edit Location (PUT Request)</h2>
+      <div id="editSection"></div>
+    </div>
+
+    <!-- DELETE -->
+    <div class="tab-content" id="delete">
+      <h2>Delete Location (DELETE Request)</h2>
+      <div id="deleteSection"></div>
+    </div>
+
+    <!-- Saved Locations -->
+    <div class="saved-locations" id="savedLocations"></div>
+
+    <!-- Response -->
+    <div class="response-info" id="responseInfo"></div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+
 </body>
-
 </html>
